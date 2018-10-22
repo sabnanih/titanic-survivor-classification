@@ -34,6 +34,7 @@ class LogisticRegression(BaseEstimator):
         iter = 0
         cost = curr_cost.copy()
         iterations = np.array(iter)
+        theta_by_iteration = []
         lr = self.learning_rate
 
         while self.cost_threshold is None or prev_cost < 0 or (prev_cost - curr_cost) > self.cost_threshold:
@@ -48,6 +49,7 @@ class LogisticRegression(BaseEstimator):
             if iter % self.iteration_threshold == 0:
                 cost = np.append(cost, [curr_cost])
                 iterations = np.append(iterations, [iter])
+                theta_by_iteration.append(theta.tolist())
 
             if self.cost_threshold is None and iter >= self.max_iter:
                 break
@@ -55,6 +57,7 @@ class LogisticRegression(BaseEstimator):
         end_time = time.time()
 
         self.training_time = end_time - start_time
+        self.weight_by_iteration = theta_by_iteration
         self.cost_by_iteration = cost
         self.iterations = iterations
         self.final_cost = curr_cost
